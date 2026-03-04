@@ -4,49 +4,6 @@ import { useEffect } from "react";
 
 export default function Home() {
   useEffect(() => {
-    // Custom cursor
-    const C = document.getElementById("C");
-    const R = document.getElementById("R");
-    if (!C || !R) return;
-
-    let mx = 0,
-      my = 0,
-      rx = 0,
-      ry = 0;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      mx = e.clientX;
-      my = e.clientY;
-      C.style.left = mx + "px";
-      C.style.top = my + "px";
-    };
-    document.addEventListener("mousemove", handleMouseMove);
-
-    let animId: number;
-    const follow = () => {
-      rx += (mx - rx) * 0.1;
-      ry += (my - ry) * 0.1;
-      R.style.left = rx + "px";
-      R.style.top = ry + "px";
-      animId = requestAnimationFrame(follow);
-    };
-    follow();
-
-    // Expand cursor on interactive elements
-    const interactives = document.querySelectorAll(
-      "a,button,.off-tab,.v-card,.p-card,.proof-card"
-    );
-    interactives.forEach((el) => {
-      el.addEventListener("mouseenter", () => {
-        C.classList.add("expand");
-        R.classList.add("expand");
-      });
-      el.addEventListener("mouseleave", () => {
-        C.classList.remove("expand");
-        R.classList.remove("expand");
-      });
-    });
-
     // Scroll reveal
     const obs = new IntersectionObserver(
       (entries) => {
@@ -57,46 +14,23 @@ export default function Home() {
       { threshold: 0.1 }
     );
     document.querySelectorAll(".rv").forEach((el) => obs.observe(el));
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      cancelAnimationFrame(animId);
-      obs.disconnect();
-    };
+    return () => obs.disconnect();
   }, []);
 
   const switchTab = (id: string, e: React.MouseEvent<HTMLDivElement>) => {
-    document
-      .querySelectorAll(".off-panel")
-      .forEach((p) => p.classList.remove("active"));
-    document
-      .querySelectorAll(".off-tab")
-      .forEach((t) => t.classList.remove("active"));
+    document.querySelectorAll(".off-panel").forEach((p) => p.classList.remove("active"));
+    document.querySelectorAll(".off-tab").forEach((t) => t.classList.remove("active"));
     document.getElementById("op-" + id)?.classList.add("active");
     (e.currentTarget as HTMLElement).classList.add("active");
   };
 
   return (
     <>
-      {/* Ambient background */}
-      <div className="ambient">
-        <div className="orb orb-1"></div>
-        <div className="orb orb-2"></div>
-        <div className="orb orb-3"></div>
-      </div>
-      <div className="dot-grid"></div>
-
-      {/* Custom cursor */}
-      <div className="cursor" id="C">
-        <div className="cursor-dot"></div>
-      </div>
-      <div className="cursor-ring" id="R"></div>
-
       {/* Status bar */}
       <div className="status">
         <div className="s-pip"></div>
         <span>Traverse City, MI</span>
-        <span style={{ color: "var(--glass-border-bright)" }}>·</span>
+        <span style={{ color: "var(--text-20)" }}>·</span>
         <span>Accepting Engagements</span>
       </div>
 
@@ -106,91 +40,49 @@ export default function Home() {
           <div className="pip"></div>Freedom Up North
         </a>
         <ul className="nav-links">
-          <li>
-            <a href="#verticals">Verticals</a>
-          </li>
-          <li>
-            <a href="#offerings">Services</a>
-          </li>
-          <li>
-            <a href="#process">Process</a>
-          </li>
-          <li>
-            <a href="#about">About</a>
-          </li>
+          <li><a href="#verticals">Verticals</a></li>
+          <li><a href="#offerings">Services</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#about">About</a></li>
         </ul>
-        <a href="#contact" className="nav-btn">
-          Start Assessment
-        </a>
+        <a href="#contact" className="nav-btn">Start Assessment</a>
       </nav>
 
       {/* Hero */}
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <div className="hero">
-          <div className="eyebrow-pill">
-            <div className="eyebrow-pip"></div>Public Sector Technology Advisory
-            · Northern Michigan
+      <div className="hero">
+        <div className="eyebrow-pill">
+          <div className="eyebrow-pip"></div>Public Sector Technology Advisory · Northern Michigan
+        </div>
+        <h1 className="hero-h1">
+          Modern tech.<br />
+          <span className="acc">Built for</span><br />
+          public service.
+        </h1>
+        <p className="hero-sub">
+          Independent technology advisory for municipalities, transit authorities, airports, and regional agencies across Northern Michigan — without the enterprise overhead.
+        </p>
+        <div className="hero-acts">
+          <a href="#offerings" className="btn-f">
+            View Services{" "}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <line x1="7" y1="17" x2="17" y2="7" />
+              <polyline points="7 7 17 7 17 17" />
+            </svg>
+          </a>
+          <a href="#process" className="btn-o">How it works</a>
+        </div>
+        <div className="hero-stats">
+          <div>
+            <div className="stat-val">10<b>+</b></div>
+            <div className="stat-lbl">Counties<br />Served</div>
           </div>
-          <h1 className="hero-h1">
-            Modern tech.
-            <br />
-            <span className="acc">Built for</span>
-            <br />
-            public service.
-          </h1>
-          <p className="hero-sub">
-            Independent technology advisory for municipalities, transit
-            authorities, airports, and regional agencies across Northern Michigan
-            — without the enterprise overhead.
-          </p>
-          <div className="hero-acts">
-            <a href="#offerings" className="btn-f">
-              View Services{" "}
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-              >
-                <line x1="7" y1="17" x2="17" y2="7" />
-                <polyline points="7 7 17 7 17 17" />
-              </svg>
-            </a>
-            <a href="#process" className="btn-o">
-              How it works
-            </a>
+          <div>
+            <div className="stat-val">4</div>
+            <div className="stat-lbl">Public Sector<br />Verticals</div>
           </div>
-          <div className="hero-stats">
-            <div>
-              <div className="stat-val">
-                10<b>+</b>
-              </div>
-              <div className="stat-lbl">
-                Counties
-                <br />
-                Served
-              </div>
-            </div>
-            <div>
-              <div className="stat-val">4</div>
-              <div className="stat-lbl">
-                Public Sector
-                <br />
-                Verticals
-              </div>
-            </div>
-            <div>
-              <div className="stat-val">
-                100<b>%</b>
-              </div>
-              <div className="stat-lbl">
-                Vendor-Independent
-                <br />
-                Advisory
-              </div>
-            </div>
+          <div>
+            <div className="stat-val">100<b>%</b></div>
+            <div className="stat-lbl">Vendor-Independent<br />Advisory</div>
           </div>
         </div>
       </div>
@@ -200,36 +92,16 @@ export default function Home() {
         <div className="ticker-track">
           {[1, 2].map((i) => (
             <span key={i} style={{ display: "contents" }}>
-              <span className="t-item">
-                <span className="td">◆</span>Cybersecurity Assessments
-              </span>
-              <span className="t-item">
-                <span className="td">◆</span>Permitting Modernization
-              </span>
-              <span className="t-item">
-                <span className="td">◆</span>Fleet Technology
-              </span>
-              <span className="t-item">
-                <span className="td">◆</span>Asset Management
-              </span>
-              <span className="t-item">
-                <span className="td">◆</span>Aviation Operations Tech
-              </span>
-              <span className="t-item">
-                <span className="td">◆</span>Transit Technology
-              </span>
-              <span className="t-item">
-                <span className="td">◆</span>Financial System Modernization
-              </span>
-              <span className="t-item">
-                <span className="td">◆</span>Records Management
-              </span>
-              <span className="t-item">
-                <span className="td">◆</span>GIS &amp; Mapping
-              </span>
-              <span className="t-item">
-                <span className="td">◆</span>Broadband Planning
-              </span>
+              <span className="t-item"><span className="td">◆</span>Cybersecurity Assessments</span>
+              <span className="t-item"><span className="td">◆</span>Permitting Modernization</span>
+              <span className="t-item"><span className="td">◆</span>Fleet Technology</span>
+              <span className="t-item"><span className="td">◆</span>Asset Management</span>
+              <span className="t-item"><span className="td">◆</span>Aviation Operations Tech</span>
+              <span className="t-item"><span className="td">◆</span>Transit Technology</span>
+              <span className="t-item"><span className="td">◆</span>Financial System Modernization</span>
+              <span className="t-item"><span className="td">◆</span>Records Management</span>
+              <span className="t-item"><span className="td">◆</span>GIS &amp; Mapping</span>
+              <span className="t-item"><span className="td">◆</span>Broadband Planning</span>
             </span>
           ))}
         </div>
@@ -239,91 +111,43 @@ export default function Home() {
       <div className="vert-band" id="verticals">
         <div className="vert-inner">
           <div className="sec-eye">Who we serve</div>
-          <h2 className="sec-h2">
-            Four verticals.
-            <br />
-            One standard of service.
-          </h2>
+          <h2 className="sec-h2">Four verticals.<br />One standard of service.</h2>
           <div className="vert-grid">
-            <div className="v-card glass rv d1">
+            <div className="v-card rv d1">
               <div className="v-icon">
-                <svg viewBox="0 0 24 24">
-                  <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                  <polyline points="9 22 9 12 15 12 15 22" />
-                </svg>
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
               </div>
               <div className="v-num">01 / 04</div>
               <div className="v-name">Municipal Government</div>
-              <p className="v-desc">
-                Cities, townships, and counties across Northern Michigan&apos;s
-                10-county region. From cybersecurity hardening to permitting
-                modernization.
-              </p>
-              <div className="v-chips">
-                <span className="chip">Cities</span>
-                <span className="chip">Townships</span>
-                <span className="chip">Counties</span>
-              </div>
+              <p className="v-desc">Cities, townships, and counties across Northern Michigan&apos;s 10-county region. From cybersecurity hardening to permitting modernization.</p>
+              <div className="v-chips"><span className="chip">Cities</span><span className="chip">Townships</span><span className="chip">Counties</span></div>
             </div>
-            <div className="v-card glass rv d2">
+            <div className="v-card rv d2">
               <div className="v-icon">
-                <svg viewBox="0 0 24 24">
-                  <rect x="1" y="3" width="15" height="13" rx="1" />
-                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
-                  <circle cx="5.5" cy="18.5" r="2.5" />
-                  <circle cx="18.5" cy="18.5" r="2.5" />
-                </svg>
+                <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1" /><polygon points="16 8 20 8 23 11 23 16 16 16 16 8" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" /></svg>
               </div>
               <div className="v-num">02 / 04</div>
               <div className="v-name">Transit Authorities</div>
-              <p className="v-desc">
-                Scheduling, dispatch, passenger information systems, and fleet
-                electrification planning for regional transit agencies like BATA.
-              </p>
-              <div className="v-chips">
-                <span className="chip">Scheduling</span>
-                <span className="chip">Fleet</span>
-                <span className="chip">Riders</span>
-              </div>
+              <p className="v-desc">Scheduling, dispatch, passenger information systems, and fleet electrification planning for regional transit agencies like BATA.</p>
+              <div className="v-chips"><span className="chip">Scheduling</span><span className="chip">Fleet</span><span className="chip">Riders</span></div>
             </div>
-            <div className="v-card glass rv d3">
+            <div className="v-card rv d3">
               <div className="v-icon">
-                <svg viewBox="0 0 24 24">
-                  <polygon points="3 11 22 2 13 21 11 13 3 11" />
-                </svg>
+                <svg viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11" /></svg>
               </div>
               <div className="v-num">03 / 04</div>
               <div className="v-name">Airport Authorities</div>
-              <p className="v-desc">
-                General aviation and commercial airports across the region.
-                Security compliance, airfield ops systems, and FAA-aligned
-                technology planning.
-              </p>
-              <div className="v-chips">
-                <span className="chip">Security</span>
-                <span className="chip">Ops</span>
-                <span className="chip">Compliance</span>
-              </div>
+              <p className="v-desc">General aviation and commercial airports across the region. Security compliance, airfield ops systems, and FAA-aligned technology planning.</p>
+              <div className="v-chips"><span className="chip">Security</span><span className="chip">Ops</span><span className="chip">Compliance</span></div>
             </div>
-            <div className="v-card glass rv d4">
+            <div className="v-card rv d4">
               <div className="v-icon">
-                <svg viewBox="0 0 24 24">
-                  <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
-                  <line x1="12" y1="22.08" x2="12" y2="12" />
-                </svg>
+                <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" /><line x1="12" y1="22.08" x2="12" y2="12" /></svg>
               </div>
               <div className="v-num">04 / 04</div>
               <div className="v-name">Regional Agencies</div>
-              <p className="v-desc">
-                Regional planning organizations, road commissions, and special
-                districts navigating complex technology decisions with limited IT
-                staff.
-              </p>
-              <div className="v-chips">
-                <span className="chip">Planning</span>
-                <span className="chip">Roads</span>
-                <span className="chip">Districts</span>
-              </div>
+              <p className="v-desc">Regional planning organizations, road commissions, and special districts navigating complex technology decisions with limited IT staff.</p>
+              <div className="v-chips"><span className="chip">Planning</span><span className="chip">Roads</span><span className="chip">Districts</span></div>
             </div>
           </div>
         </div>
@@ -332,17 +156,10 @@ export default function Home() {
       {/* Offerings */}
       <div className="sec" id="offerings">
         <div className="sec-eye">What we do</div>
-        <h2 className="sec-h2">
-          Three ways we
-          <br />
-          engage with agencies.
-        </h2>
+        <h2 className="sec-h2">Three ways we<br />engage with agencies.</h2>
         <div className="off-layout">
           <div className="off-tabs">
-            <div
-              className="off-tab active"
-              onClick={(e) => switchTab("assess", e)}
-            >
+            <div className="off-tab active" onClick={(e) => switchTab("assess", e)}>
               <div className="off-tab-n">01 — ASSESS</div>
               <div className="off-tab-t">Technology Readiness Assessment</div>
             </div>
@@ -356,146 +173,50 @@ export default function Home() {
             </div>
           </div>
           <div>
-            {/* Assess Panel */}
-            <div className="off-panel active glass off-inner" id="op-assess">
+            <div className="off-panel active off-inner" id="op-assess">
               <div className="off-badge">Fixed Fee · 30–60 Days</div>
-              <h3 className="off-title">
-                <em>Assess</em> your current state.
-              </h3>
-              <p className="off-body">
-                An independent technology audit showing exactly where your agency
-                stands — cybersecurity posture, legacy system risk,
-                modernization opportunities. No vendor bias. A clear picture and
-                a prioritized action plan you actually own.
-              </p>
-              <div className="off-price">
-                <span className="price-from">Starting at</span>
-                <span className="price-val">$3,500</span>
-                <span className="price-note">/ engagement</span>
-              </div>
+              <h3 className="off-title"><em>Assess</em> your current state.</h3>
+              <p className="off-body">An independent technology audit showing exactly where your agency stands — cybersecurity posture, legacy system risk, modernization opportunities. No vendor bias. A clear picture and a prioritized action plan you actually own.</p>
+              <div className="off-price"><span className="price-from">Starting at</span><span className="price-val">$3,500</span><span className="price-note">/ engagement</span></div>
               <div className="off-delivers">
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Current-state technology
-                  inventory
-                </div>
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Cybersecurity gap analysis
-                </div>
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Prioritized modernization
-                  roadmap
-                </div>
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Budget estimation for
-                  improvements
-                </div>
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Vendor-neutral recommendations
-                </div>
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Executive briefing deck
-                </div>
+                <div className="dlv"><div className="dlv-pip"></div>Current-state technology inventory</div>
+                <div className="dlv"><div className="dlv-pip"></div>Cybersecurity gap analysis</div>
+                <div className="dlv"><div className="dlv-pip"></div>Prioritized modernization roadmap</div>
+                <div className="dlv"><div className="dlv-pip"></div>Budget estimation for improvements</div>
+                <div className="dlv"><div className="dlv-pip"></div>Vendor-neutral recommendations</div>
+                <div className="dlv"><div className="dlv-pip"></div>Executive briefing deck</div>
               </div>
-              <a href="#contact" className="off-link">
-                Schedule an assessment{" "}
-                <svg viewBox="0 0 24 24">
-                  <line x1="7" y1="17" x2="17" y2="7" />
-                  <polyline points="7 7 17 7 17 17" />
-                </svg>
-              </a>
+              <a href="#contact" className="off-link">Schedule an assessment <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg></a>
             </div>
-            {/* Advise Panel */}
-            <div className="off-panel glass off-inner" id="op-advise">
+            <div className="off-panel off-inner" id="op-advise">
               <div className="off-badge">Retainer or Project · Ongoing</div>
-              <h3 className="off-title">
-                <em>Advise</em> on what&apos;s next.
-              </h3>
-              <p className="off-body">
-                Fractional technology leadership for agencies that need expert
-                guidance without a full-time CIO. We develop RFPs, evaluate
-                vendor responses, support contract negotiations, and oversee
-                implementations — as your advocate, not the vendor&apos;s.
-              </p>
-              <div className="off-price">
-                <span className="price-from">Starting at</span>
-                <span className="price-val">$1,500</span>
-                <span className="price-note">/ month</span>
-              </div>
+              <h3 className="off-title"><em>Advise</em> on what&apos;s next.</h3>
+              <p className="off-body">Fractional technology leadership for agencies that need expert guidance without a full-time CIO. We develop RFPs, evaluate vendor responses, support contract negotiations, and oversee implementations — as your advocate, not the vendor&apos;s.</p>
+              <div className="off-price"><span className="price-from">Starting at</span><span className="price-val">$1,500</span><span className="price-note">/ month</span></div>
               <div className="off-delivers">
-                <div className="dlv">
-                  <div className="dlv-pip"></div>RFP development and management
-                </div>
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Vendor evaluation scorecards
-                </div>
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Contract negotiation support
-                </div>
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Implementation oversight
-                </div>
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Board &amp; council
-                  presentations
-                </div>
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Ongoing strategic guidance
-                </div>
+                <div className="dlv"><div className="dlv-pip"></div>RFP development and management</div>
+                <div className="dlv"><div className="dlv-pip"></div>Vendor evaluation scorecards</div>
+                <div className="dlv"><div className="dlv-pip"></div>Contract negotiation support</div>
+                <div className="dlv"><div className="dlv-pip"></div>Implementation oversight</div>
+                <div className="dlv"><div className="dlv-pip"></div>Board &amp; council presentations</div>
+                <div className="dlv"><div className="dlv-pip"></div>Ongoing strategic guidance</div>
               </div>
-              <a href="#contact" className="off-link">
-                Explore advisory engagement{" "}
-                <svg viewBox="0 0 24 24">
-                  <line x1="7" y1="17" x2="17" y2="7" />
-                  <polyline points="7 7 17 7 17 17" />
-                </svg>
-              </a>
+              <a href="#contact" className="off-link">Explore advisory engagement <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg></a>
             </div>
-            {/* Connect Panel */}
-            <div className="off-panel glass off-inner" id="op-connect">
-              <div className="off-badge">
-                Commission-Based · Fully Transparent
-              </div>
-              <h3 className="off-title">
-                <em>Connect</em> to the right tools.
-              </h3>
-              <p className="off-body">
-                After understanding your needs, we match your agency with vetted
-                solutions from proven government vendors — cybersecurity,
-                permitting, fleet, financial systems, and more. We earn referral
-                fees from vendors, disclosed upfront. Your cost: nothing.
-              </p>
-              <div className="off-price">
-                <span className="price-from">Cost to agency</span>
-                <span className="price-val">$0</span>
-                <span className="price-note">vendor commissions disclosed</span>
-              </div>
+            <div className="off-panel off-inner" id="op-connect">
+              <div className="off-badge">Commission-Based · Fully Transparent</div>
+              <h3 className="off-title"><em>Connect</em> to the right tools.</h3>
+              <p className="off-body">After understanding your needs, we match your agency with vetted solutions from proven government vendors — cybersecurity, permitting, fleet, financial systems, and more. We earn referral fees from vendors, disclosed upfront. Your cost: nothing.</p>
+              <div className="off-price"><span className="price-from">Cost to agency</span><span className="price-val">$0</span><span className="price-note">vendor commissions disclosed</span></div>
               <div className="off-delivers">
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Vetted vendor shortlist
-                </div>
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Comparative product analysis
-                </div>
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Demo coordination
-                </div>
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Reference check management
-                </div>
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Cooperative purchasing guidance
-                </div>
-                <div className="dlv">
-                  <div className="dlv-pip"></div>Implementation introduction
-                </div>
+                <div className="dlv"><div className="dlv-pip"></div>Vetted vendor shortlist</div>
+                <div className="dlv"><div className="dlv-pip"></div>Comparative product analysis</div>
+                <div className="dlv"><div className="dlv-pip"></div>Demo coordination</div>
+                <div className="dlv"><div className="dlv-pip"></div>Reference check management</div>
+                <div className="dlv"><div className="dlv-pip"></div>Cooperative purchasing guidance</div>
+                <div className="dlv"><div className="dlv-pip"></div>Implementation introduction</div>
               </div>
-              <a href="#contact" className="off-link">
-                Find your solution{" "}
-                <svg viewBox="0 0 24 24">
-                  <line x1="7" y1="17" x2="17" y2="7" />
-                  <polyline points="7 7 17 7 17 17" />
-                </svg>
-              </a>
+              <a href="#contact" className="off-link">Find your solution <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg></a>
             </div>
           </div>
         </div>
@@ -505,131 +226,47 @@ export default function Home() {
       <div className="proc-band" id="process">
         <div className="proc-inner">
           <div className="sec-eye">How it works</div>
-          <h2 className="sec-h2">
-            From first call
-            <br />
-            to fully deployed.
-          </h2>
+          <h2 className="sec-h2">From first call<br />to fully deployed.</h2>
           <div className="proc-grid">
-            <div className="p-card glass rv d1">
-              <div className="p-big">01</div>
-              <div className="p-title">Discovery Call</div>
-              <p className="p-body">
-                30 minutes. We learn your agency&apos;s current state, pain
-                points, and goals. No pitch. Just the right questions.
-              </p>
-              <div className="p-when">Week 1</div>
-            </div>
-            <div className="p-card glass rv d2">
-              <div className="p-big">02</div>
-              <div className="p-title">Scoped Proposal</div>
-              <p className="p-body">
-                A clear proposal outlining deliverables, timeline, and fixed fee.
-                No retainer traps. No surprises.
-              </p>
-              <div className="p-when">Weeks 1–2</div>
-            </div>
-            <div className="p-card glass rv d3">
-              <div className="p-big">03</div>
-              <div className="p-title">Assess &amp; Report</div>
-              <p className="p-body">
-                Structured technology audit, stakeholder interviews, and a
-                written report with prioritized next steps.
-              </p>
-              <div className="p-when">Weeks 3–6</div>
-            </div>
-            <div className="p-card glass rv d4">
-              <div className="p-big">04</div>
-              <div className="p-title">Advise &amp; Execute</div>
-              <p className="p-body">
-                Ongoing advisory or matched vendor solutions — depending on where
-                your agency needs to go next.
-              </p>
-              <div className="p-when">Month 2+</div>
-            </div>
+            <div className="p-card rv d1"><div className="p-big">01</div><div className="p-title">Discovery Call</div><p className="p-body">30 minutes. We learn your agency&apos;s current state, pain points, and goals. No pitch. Just the right questions.</p><div className="p-when">Week 1</div></div>
+            <div className="p-card rv d2"><div className="p-big">02</div><div className="p-title">Scoped Proposal</div><p className="p-body">A clear proposal outlining deliverables, timeline, and fixed fee. No retainer traps. No surprises.</p><div className="p-when">Weeks 1–2</div></div>
+            <div className="p-card rv d3"><div className="p-big">03</div><div className="p-title">Assess &amp; Report</div><p className="p-body">Structured technology audit, stakeholder interviews, and a written report with prioritized next steps.</p><div className="p-when">Weeks 3–6</div></div>
+            <div className="p-card rv d4"><div className="p-big">04</div><div className="p-title">Advise &amp; Execute</div><p className="p-body">Ongoing advisory or matched vendor solutions — depending on where your agency needs to go next.</p><div className="p-when">Month 2+</div></div>
           </div>
         </div>
       </div>
 
-      {/* About — reworked */}
+      {/* About */}
       <div className="sec" id="about">
         <div className="sec-eye">Who&apos;s behind this</div>
-        <h2 className="sec-h2">
-          We sit on <em>your side</em>
-          <br />
-          of the table.
-        </h2>
+        <h2 className="sec-h2">We sit on <em>your side</em><br />of the table.</h2>
         <div className="about-layout">
           <div className="about-narrative rv d1">
-            <p>
-              Most technology consultants advise government from the outside.
-              They study it. We <strong>operate inside it</strong> — making
-              budget decisions, voting on procurements, sitting through the same
-              board meetings you sit through.
-            </p>
-            <p>
-              That means we know what actually gets approved, what falls apart in
-              implementation, and where agencies get locked into contracts that
-              don&apos;t serve them. We&apos;ve seen it from the dais, from the
-              vendor side, and from the operations floor.
-            </p>
-            <p>
-              We also spent a decade in enterprise technology sales — managing
-              national accounts for platforms like Dealer.com and DealerInspire
-              (Cox Automotive). We know{" "}
-              <strong>how software vendors price, negotiate, and sell</strong>.
-              That knowledge now works for you, not against you.
-            </p>
-            <p>
-              Freedom Up North exists because Northern Michigan agencies deserve
-              the same caliber of technology guidance that metro governments get
-              — without the six-figure retainer or the 200-page report that sits
-              on a shelf.
-            </p>
+            <p>Most technology consultants advise government from the outside. They study it. We <strong>operate inside it</strong> — making budget decisions, voting on procurements, sitting through the same board meetings you sit through.</p>
+            <p>That means we know what actually gets approved, what falls apart in implementation, and where agencies get locked into contracts that don&apos;t serve them. We&apos;ve seen it from the dais, from the vendor side, and from the operations floor.</p>
+            <p>We also spent a decade in enterprise technology sales — managing national accounts for platforms like Dealer.com and DealerInspire (Cox Automotive). We know <strong>how software vendors price, negotiate, and sell</strong>. That knowledge now works for you, not against you.</p>
+            <p>Freedom Up North exists because Northern Michigan agencies deserve the same caliber of technology guidance that metro governments get — without the six-figure retainer or the 200-page report that sits on a shelf.</p>
           </div>
           <div className="about-proof">
-            <div className="proof-card glass rv d1">
+            <div className="proof-card rv d1">
               <div className="proof-role">Elected Official</div>
-              <div className="proof-org">
-                Traverse City Commission
-              </div>
-              <p className="proof-detail">
-                Active City Commissioner. Direct experience in municipal
-                budgeting, procurement votes, infrastructure planning, and
-                policy development.
-              </p>
+              <div className="proof-org">Traverse City Commission</div>
+              <p className="proof-detail">Active City Commissioner. Direct experience in municipal budgeting, procurement votes, infrastructure planning, and policy development.</p>
             </div>
-            <div className="proof-card glass rv d2">
+            <div className="proof-card rv d2">
               <div className="proof-role">Board Member</div>
-              <div className="proof-org">
-                Bay Area Transportation Authority
-              </div>
-              <p className="proof-detail">
-                BATA board member overseeing transit operations, technology
-                procurement, fleet planning, and executive hiring for the
-                region&apos;s public transit system.
-              </p>
+              <div className="proof-org">Bay Area Transportation Authority</div>
+              <p className="proof-detail">BATA board member overseeing transit operations, technology procurement, fleet planning, and executive hiring for the region&apos;s public transit system.</p>
             </div>
-            <div className="proof-card glass rv d3">
+            <div className="proof-card rv d3">
               <div className="proof-role">Operations &amp; Training</div>
               <div className="proof-org">Civil Air Patrol</div>
-              <p className="proof-detail">
-                Aviation operations background through CAP. Familiar with
-                airfield management, security protocols, and FAA-adjacent
-                technology systems.
-              </p>
+              <p className="proof-detail">Aviation operations background through CAP. Familiar with airfield management, security protocols, and FAA-adjacent technology systems.</p>
             </div>
-            <div className="proof-card glass rv d4">
+            <div className="proof-card rv d4">
               <div className="proof-role">Enterprise Technology</div>
-              <div className="proof-org">
-                DealerInspire · Cox Automotive
-              </div>
-              <p className="proof-detail">
-                A decade managing national enterprise accounts, OEM
-                certification programs, and platform migrations. Deep
-                understanding of how vendors operate and how to protect the
-                buyer.
-              </p>
+              <div className="proof-org">DealerInspire · Cox Automotive</div>
+              <p className="proof-detail">A decade managing national enterprise accounts, OEM certification programs, and platform migrations. Deep understanding of how vendors operate and how to protect the buyer.</p>
             </div>
           </div>
         </div>
@@ -637,36 +274,19 @@ export default function Home() {
 
       {/* CTA */}
       <div className="cta-sec" id="contact">
-        <div className="cta-glass glass">
+        <div className="cta-glass">
           <div className="cta-glow"></div>
           <div className="cta-eye">Ready to move forward?</div>
-          <h2 className="cta-h2">
-            Start with a free
-            <br />
-            discovery call.
-          </h2>
-          <p className="cta-sub">
-            30 minutes. No pitch. An honest conversation about where your agency
-            stands and where it needs to go.
-          </p>
+          <h2 className="cta-h2">Start with a free<br />discovery call.</h2>
+          <p className="cta-sub">30 minutes. No pitch. An honest conversation about where your agency stands and where it needs to go.</p>
           <div className="cta-btns">
             <a href="mailto:hello@freedomupnorth.com" className="btn-f">
               Schedule a call{" "}
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-              >
-                <line x1="7" y1="17" x2="17" y2="7" />
-                <polyline points="7 7 17 7 17 17" />
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" />
               </svg>
             </a>
-            <a href="tel:2317149622" className="btn-o">
-              231.714.9622
-            </a>
+            <a href="tel:2317149622" className="btn-o">231.714.9622</a>
           </div>
         </div>
       </div>
@@ -674,32 +294,15 @@ export default function Home() {
       {/* Footer */}
       <footer>
         <div className="f-logo">
-          <div
-            className="pip"
-            style={{
-              width: "6px",
-              height: "6px",
-              boxShadow: "0 0 6px var(--electric)",
-            }}
-          ></div>
+          <div className="pip" style={{ width: "6px", height: "6px", boxShadow: "0 0 6px var(--blue)" }}></div>
           Freedom Up North
         </div>
-        <span className="f-copy">
-          © 2026 Freedom Up North LLC · Traverse City, Michigan
-        </span>
+        <span className="f-copy">© 2026 Freedom Up North LLC · Traverse City, Michigan</span>
         <ul className="f-links">
-          <li>
-            <a href="#verticals">Verticals</a>
-          </li>
-          <li>
-            <a href="#offerings">Services</a>
-          </li>
-          <li>
-            <a href="#about">About</a>
-          </li>
-          <li>
-            <a href="#contact">Contact</a>
-          </li>
+          <li><a href="#verticals">Verticals</a></li>
+          <li><a href="#offerings">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
       </footer>
     </>
