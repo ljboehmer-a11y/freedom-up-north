@@ -1,10 +1,196 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const offerings = [
+  {
+    num: "01",
+    label: "ASSESS",
+    name: "Technology Readiness Assessment",
+    badge: "Fixed Fee · 30–60 Days",
+    headline: "Assess",
+    headlineRest: "your current state.",
+    body: "An independent technology audit showing exactly where your agency stands — cybersecurity posture, legacy system risk, modernization opportunities. No vendor bias. A clear picture and a prioritized action plan you actually own.",
+    priceLabel: "Starting at",
+    price: "$3,500",
+    priceNote: "/ engagement",
+    delivers: [
+      "Current-state technology inventory",
+      "Cybersecurity gap analysis",
+      "Prioritized modernization roadmap",
+      "Budget estimation for improvements",
+      "Vendor-neutral recommendations",
+      "Executive briefing deck",
+    ],
+    cta: "Schedule an assessment",
+    color: "#4750F5",
+  },
+  {
+    num: "02",
+    label: "ADVISE",
+    name: "Technology Advisory",
+    badge: "Retainer or Project · Ongoing",
+    headline: "Advise",
+    headlineRest: "on what\u2019s next.",
+    body: "Fractional technology leadership for agencies that need expert guidance without a full-time CIO. We develop RFPs, evaluate vendor responses, support contract negotiations, and oversee implementations \u2014 as your advocate, not the vendor\u2019s.",
+    priceLabel: "Starting at",
+    price: "$1,500",
+    priceNote: "/ month",
+    delivers: [
+      "RFP development and management",
+      "Vendor evaluation scorecards",
+      "Contract negotiation support",
+      "Implementation oversight",
+      "Board & council presentations",
+      "Ongoing strategic guidance",
+    ],
+    cta: "Explore advisory engagement",
+    color: "#1F84CD",
+  },
+  {
+    num: "03",
+    label: "CONNECT",
+    name: "Curated Solutions",
+    badge: "Commission-Based · Fully Transparent",
+    headline: "Connect",
+    headlineRest: "to the right tools.",
+    body: "After understanding your needs, we match your agency with vetted solutions from proven government vendors \u2014 cybersecurity, permitting, fleet, financial systems, and more. We earn referral fees from vendors, disclosed upfront. Your cost: nothing.",
+    priceLabel: "Cost to agency",
+    price: "$0",
+    priceNote: "vendor commissions disclosed",
+    delivers: [
+      "Vetted vendor shortlist",
+      "Comparative product analysis",
+      "Demo coordination",
+      "Reference check management",
+      "Cooperative purchasing guidance",
+      "Implementation introduction",
+    ],
+    cta: "Find your solution",
+    color: "#5CB93D",
+  },
+];
+
+function OfferingsSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const rect = container.getBoundingClientRect();
+      const stickyHeight = window.innerHeight;
+      const scrollableHeight = container.offsetHeight - stickyHeight;
+      const scrolled = -rect.top;
+      const pct = Math.max(0, Math.min(1, scrolled / scrollableHeight));
+      setProgress(pct);
+
+      const idx = Math.min(2, Math.floor(pct * 3));
+      setActiveIndex(idx);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const o = offerings[activeIndex];
+  const segmentProgress = (progress * 3) - activeIndex;
+  const cardOpacity = Math.min(1, segmentProgress * 3);
+  const cardY = Math.max(0, (1 - segmentProgress * 3) * 40);
+
+  return (
+    <div ref={containerRef} className="off-scroll-container" id="offerings">
+      <div className="off-sticky">
+        <div className="off-sticky-inner">
+          {/* Left: progress + labels */}
+          <div className="off-nav">
+            <div className="off-progress-track">
+              <div
+                className="off-progress-fill"
+                style={{ height: `${progress * 100}%` }}
+              />
+              {offerings.map((item, i) => (
+                <div
+                  key={i}
+                  className={`off-progress-dot ${i <= activeIndex ? "active" : ""}`}
+                  style={{ top: `${(i / 2) * 100}%` }}
+                />
+              ))}
+            </div>
+            <div className="off-nav-labels">
+              {offerings.map((item, i) => (
+                <div
+                  key={i}
+                  className={`off-nav-item ${i === activeIndex ? "active" : ""}`}
+                >
+                  <span className="off-nav-num">{item.num}</span>
+                  <span className="off-nav-name">{item.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: content card */}
+          <div className="off-content">
+            <div
+              className="off-card"
+              style={{
+                opacity: Math.min(1, Math.max(0.3, cardOpacity)),
+                transform: `translateY(${cardY}px)`,
+              }}
+            >
+              <div className="off-card-badge" style={{ borderColor: `${o.color}33`, color: o.color, background: `${o.color}0d` }}>
+                {o.badge}
+              </div>
+              <h3 className="off-card-title">
+                <span style={{ color: o.color }}>{o.headline}</span>{" "}
+                {o.headlineRest}
+              </h3>
+              <p className="off-card-body">{o.body}</p>
+              <div className="off-card-price" style={{ borderColor: `${o.color}22`, background: `${o.color}08` }}>
+                <span className="off-card-price-label">{o.priceLabel}</span>
+                <span className="off-card-price-val">{o.price}</span>
+                <span className="off-card-price-note">{o.priceNote}</span>
+              </div>
+              <div className="off-card-delivers">
+                {o.delivers.map((d, i) => (
+                  <div key={i} className="off-card-dlv">
+                    <div className="off-card-pip" style={{ background: o.color, boxShadow: `0 0 6px ${o.color}66` }} />
+                    {d}
+                  </div>
+                ))}
+              </div>
+              <a href="#contact" className="off-card-cta" style={{ color: o.color }}>
+                {o.cta}{" "}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll hint */}
+        {progress < 0.05 && (
+          <div className="off-scroll-hint">
+            <span>Scroll to explore</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <polyline points="19 12 12 19 5 12" />
+            </svg>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   useEffect(() => {
-    // Scroll reveal
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -16,13 +202,6 @@ export default function Home() {
     document.querySelectorAll(".rv").forEach((el) => obs.observe(el));
     return () => obs.disconnect();
   }, []);
-
-  const switchTab = (id: string, e: React.MouseEvent<HTMLDivElement>) => {
-    document.querySelectorAll(".off-panel").forEach((p) => p.classList.remove("active"));
-    document.querySelectorAll(".off-tab").forEach((t) => t.classList.remove("active"));
-    document.getElementById("op-" + id)?.classList.add("active");
-    (e.currentTarget as HTMLElement).classList.add("active");
-  };
 
   return (
     <>
@@ -114,36 +293,28 @@ export default function Home() {
           <h2 className="sec-h2">Four verticals.<br />One standard of service.</h2>
           <div className="vert-grid">
             <div className="v-card rv d1">
-              <div className="v-icon">
-                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
-              </div>
+              <div className="v-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg></div>
               <div className="v-num">01 / 04</div>
               <div className="v-name">Municipal Government</div>
               <p className="v-desc">Cities, townships, and counties across Northern Michigan&apos;s 10-county region. From cybersecurity hardening to permitting modernization.</p>
               <div className="v-chips"><span className="chip">Cities</span><span className="chip">Townships</span><span className="chip">Counties</span></div>
             </div>
             <div className="v-card rv d2">
-              <div className="v-icon">
-                <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1" /><polygon points="16 8 20 8 23 11 23 16 16 16 16 8" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" /></svg>
-              </div>
+              <div className="v-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1" /><polygon points="16 8 20 8 23 11 23 16 16 16 16 8" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" /></svg></div>
               <div className="v-num">02 / 04</div>
               <div className="v-name">Transit Authorities</div>
               <p className="v-desc">Scheduling, dispatch, passenger information systems, and fleet electrification planning for regional transit agencies.</p>
               <div className="v-chips"><span className="chip">Scheduling</span><span className="chip">Fleet</span><span className="chip">Riders</span></div>
             </div>
             <div className="v-card rv d3">
-              <div className="v-icon">
-                <svg viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11" /></svg>
-              </div>
+              <div className="v-icon"><svg viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11" /></svg></div>
               <div className="v-num">03 / 04</div>
               <div className="v-name">Airport Authorities</div>
               <p className="v-desc">General aviation and commercial airports across the region. Security compliance, airfield ops systems, and FAA-aligned technology planning.</p>
               <div className="v-chips"><span className="chip">Security</span><span className="chip">Ops</span><span className="chip">Compliance</span></div>
             </div>
             <div className="v-card rv d4">
-              <div className="v-icon">
-                <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" /><line x1="12" y1="22.08" x2="12" y2="12" /></svg>
-              </div>
+              <div className="v-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" /><line x1="12" y1="22.08" x2="12" y2="12" /></svg></div>
               <div className="v-num">04 / 04</div>
               <div className="v-name">Regional Agencies</div>
               <p className="v-desc">Regional planning organizations, road commissions, and special districts navigating complex technology decisions with limited IT staff.</p>
@@ -153,74 +324,14 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Offerings */}
-      <div className="sec" id="offerings">
-        <div className="sec-eye">What we do</div>
-        <h2 className="sec-h2">Three ways we<br />engage with agencies.</h2>
-        <div className="off-layout">
-          <div className="off-tabs">
-            <div className="off-tab active" onClick={(e) => switchTab("assess", e)}>
-              <div className="off-tab-n">01 — ASSESS</div>
-              <div className="off-tab-t">Technology Readiness Assessment</div>
-            </div>
-            <div className="off-tab" onClick={(e) => switchTab("advise", e)}>
-              <div className="off-tab-n">02 — ADVISE</div>
-              <div className="off-tab-t">Technology Advisory</div>
-            </div>
-            <div className="off-tab" onClick={(e) => switchTab("connect", e)}>
-              <div className="off-tab-n">03 — CONNECT</div>
-              <div className="off-tab-t">Curated Solutions</div>
-            </div>
-          </div>
-          <div>
-            <div className="off-panel active off-inner" id="op-assess">
-              <div className="off-badge">Fixed Fee · 30–60 Days</div>
-              <h3 className="off-title"><em>Assess</em> your current state.</h3>
-              <p className="off-body">An independent technology audit showing exactly where your agency stands — cybersecurity posture, legacy system risk, modernization opportunities. No vendor bias. A clear picture and a prioritized action plan you actually own.</p>
-              <div className="off-price"><span className="price-from">Starting at</span><span className="price-val">$3,500</span><span className="price-note">/ engagement</span></div>
-              <div className="off-delivers">
-                <div className="dlv"><div className="dlv-pip"></div>Current-state technology inventory</div>
-                <div className="dlv"><div className="dlv-pip"></div>Cybersecurity gap analysis</div>
-                <div className="dlv"><div className="dlv-pip"></div>Prioritized modernization roadmap</div>
-                <div className="dlv"><div className="dlv-pip"></div>Budget estimation for improvements</div>
-                <div className="dlv"><div className="dlv-pip"></div>Vendor-neutral recommendations</div>
-                <div className="dlv"><div className="dlv-pip"></div>Executive briefing deck</div>
-              </div>
-              <a href="#contact" className="off-link">Schedule an assessment <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg></a>
-            </div>
-            <div className="off-panel off-inner" id="op-advise">
-              <div className="off-badge">Retainer or Project · Ongoing</div>
-              <h3 className="off-title"><em>Advise</em> on what&apos;s next.</h3>
-              <p className="off-body">Fractional technology leadership for agencies that need expert guidance without a full-time CIO. We develop RFPs, evaluate vendor responses, support contract negotiations, and oversee implementations — as your advocate, not the vendor&apos;s.</p>
-              <div className="off-price"><span className="price-from">Starting at</span><span className="price-val">$1,500</span><span className="price-note">/ month</span></div>
-              <div className="off-delivers">
-                <div className="dlv"><div className="dlv-pip"></div>RFP development and management</div>
-                <div className="dlv"><div className="dlv-pip"></div>Vendor evaluation scorecards</div>
-                <div className="dlv"><div className="dlv-pip"></div>Contract negotiation support</div>
-                <div className="dlv"><div className="dlv-pip"></div>Implementation oversight</div>
-                <div className="dlv"><div className="dlv-pip"></div>Board &amp; council presentations</div>
-                <div className="dlv"><div className="dlv-pip"></div>Ongoing strategic guidance</div>
-              </div>
-              <a href="#contact" className="off-link">Explore advisory engagement <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg></a>
-            </div>
-            <div className="off-panel off-inner" id="op-connect">
-              <div className="off-badge">Commission-Based · Fully Transparent</div>
-              <h3 className="off-title"><em>Connect</em> to the right tools.</h3>
-              <p className="off-body">After understanding your needs, we match your agency with vetted solutions from proven government vendors — cybersecurity, permitting, fleet, financial systems, and more. We earn referral fees from vendors, disclosed upfront. Your cost: nothing.</p>
-              <div className="off-price"><span className="price-from">Cost to agency</span><span className="price-val">$0</span><span className="price-note">vendor commissions disclosed</span></div>
-              <div className="off-delivers">
-                <div className="dlv"><div className="dlv-pip"></div>Vetted vendor shortlist</div>
-                <div className="dlv"><div className="dlv-pip"></div>Comparative product analysis</div>
-                <div className="dlv"><div className="dlv-pip"></div>Demo coordination</div>
-                <div className="dlv"><div className="dlv-pip"></div>Reference check management</div>
-                <div className="dlv"><div className="dlv-pip"></div>Cooperative purchasing guidance</div>
-                <div className="dlv"><div className="dlv-pip"></div>Implementation introduction</div>
-              </div>
-              <a href="#contact" className="off-link">Find your solution <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg></a>
-            </div>
-          </div>
+      {/* Offerings — scroll-driven */}
+      <div className="off-section-header">
+        <div className="off-section-header-inner">
+          <div className="sec-eye">What we do</div>
+          <h2 className="sec-h2" style={{ marginBottom: 0 }}>Three ways we<br />engage with agencies.</h2>
         </div>
       </div>
+      <OfferingsSection />
 
       {/* Process */}
       <div className="proc-band" id="process">
