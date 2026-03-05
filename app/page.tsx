@@ -128,7 +128,7 @@ export default function Home() {
               </div>
               <div className="v-num">02 / 04</div>
               <div className="v-name">Transit Authorities</div>
-              <p className="v-desc">Scheduling, dispatch, passenger information systems, and fleet electrification planning for regional transit agencies like BATA.</p>
+              <p className="v-desc">Scheduling, dispatch, passenger information systems, and fleet electrification planning for regional transit agencies.</p>
               <div className="v-chips"><span className="chip">Scheduling</span><span className="chip">Fleet</span><span className="chip">Riders</span></div>
             </div>
             <div className="v-card rv d3">
@@ -240,35 +240,11 @@ export default function Home() {
       <div className="sec" id="about">
         <div className="sec-eye">Who&apos;s behind this</div>
         <h2 className="sec-h2">We sit on <em>your side</em><br />of the table.</h2>
-        <div className="about-layout">
-          <div className="about-narrative rv d1">
-            <p>Most technology consultants advise government from the outside. They study it. We <strong>operate inside it</strong> — making budget decisions, voting on procurements, sitting through the same board meetings you sit through.</p>
-            <p>That means we know what actually gets approved, what falls apart in implementation, and where agencies get locked into contracts that don&apos;t serve them. We&apos;ve seen it from the dais, from the vendor side, and from the operations floor.</p>
-            <p>We also spent a decade in enterprise technology sales — managing national accounts for platforms like Dealer.com and DealerInspire (Cox Automotive). We know <strong>how software vendors price, negotiate, and sell</strong>. That knowledge now works for you, not against you.</p>
-            <p>Freedom Up North exists because Northern Michigan agencies deserve the same caliber of technology guidance that metro governments get — without the six-figure retainer or the 200-page report that sits on a shelf.</p>
-          </div>
-          <div className="about-proof">
-            <div className="proof-card rv d1">
-              <div className="proof-role">Elected Official</div>
-              <div className="proof-org">Traverse City Commission</div>
-              <p className="proof-detail">Active City Commissioner. Direct experience in municipal budgeting, procurement votes, infrastructure planning, and policy development.</p>
-            </div>
-            <div className="proof-card rv d2">
-              <div className="proof-role">Board Member</div>
-              <div className="proof-org">Bay Area Transportation Authority</div>
-              <p className="proof-detail">BATA board member overseeing transit operations, technology procurement, fleet planning, and executive hiring for the region&apos;s public transit system.</p>
-            </div>
-            <div className="proof-card rv d3">
-              <div className="proof-role">Operations &amp; Training</div>
-              <div className="proof-org">Civil Air Patrol</div>
-              <p className="proof-detail">Aviation operations background through CAP. Familiar with airfield management, security protocols, and FAA-adjacent technology systems.</p>
-            </div>
-            <div className="proof-card rv d4">
-              <div className="proof-role">Enterprise Technology</div>
-              <div className="proof-org">DealerInspire · Cox Automotive</div>
-              <p className="proof-detail">A decade managing national enterprise accounts, OEM certification programs, and platform migrations. Deep understanding of how vendors operate and how to protect the buyer.</p>
-            </div>
-          </div>
+        <div className="about-narrative-full rv d1">
+            <p>Northern Michigan agencies are making technology decisions without a roadmap. Vendors pitch. Consultants generalize. And when implementation fails, the agency absorbs the cost.</p>
+            <p>We&apos;ve sat at the same tables you sit at. We understand your budget cycles, your procurement constraints, and what it takes to get a technology decision approved and actually implemented.</p>
+            <p>We bring a decade of enterprise technology experience at the national level. We know <strong>how vendors price, negotiate, and structure deals</strong>. That knowledge works for your agency.</p>
+            <p>Freedom Up North exists because Northern Michigan agencies deserve the same caliber of technology guidance that metro governments receive. Without the six-figure retainer or the 200-page report that sits on a shelf.</p>
         </div>
       </div>
 
