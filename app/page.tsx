@@ -237,14 +237,25 @@ export default function Home() {
       </div>
 
       {/* About */}
-      <div className="sec" id="about">
-        <div className="sec-eye">Who&apos;s behind this</div>
-        <h2 className="sec-h2">We sit on <em>your side</em><br />of the table.</h2>
-        <div className="about-narrative-full rv d1">
-            <p>Northern Michigan agencies are making technology decisions without a roadmap. Vendors pitch. Consultants generalize. And when implementation fails, the agency absorbs the cost.</p>
-            <p>We&apos;ve sat at the same tables you sit at. We understand your budget cycles, your procurement constraints, and what it takes to get a technology decision approved and actually implemented.</p>
-            <p>We bring a decade of enterprise technology experience at the national level. We know <strong>how vendors price, negotiate, and structure deals</strong>. That knowledge works for your agency.</p>
+      <div className="about-band" id="about">
+        <div className="about-inner">
+          <div className="sec-eye">Who&apos;s behind this</div>
+          <h2 className="sec-h2">We sit on <em>your side</em><br />of the table.</h2>
+          <div className="about-columns">
+            <div className="about-col rv d1">
+              <h3 className="about-col-h">The problem</h3>
+              <p>Northern Michigan agencies are making technology decisions without a roadmap. Vendors pitch. Consultants generalize. And when implementation fails, the agency absorbs the cost.</p>
+              <p>Most firms treat public sector work as a side project. They send junior staff, recycle templates from metro engagements, and disappear after the final invoice. The agency is left with a system that doesn&apos;t fit, a contract it can&apos;t exit, and no one to call.</p>
+            </div>
+            <div className="about-col rv d2">
+              <h3 className="about-col-h">Our approach</h3>
+              <p>We&apos;ve sat at the same tables you sit at. We understand your budget cycles, your procurement constraints, and what it takes to get a technology decision approved and actually implemented.</p>
+              <p>We bring a decade of enterprise technology experience at the national level. We know <strong>how vendors price, negotiate, and structure deals</strong>. That knowledge works for your agency — not against it.</p>
+            </div>
+          </div>
+          <div className="about-statement rv d3">
             <p>Freedom Up North exists because Northern Michigan agencies deserve the same caliber of technology guidance that metro governments receive. Without the six-figure retainer or the 200-page report that sits on a shelf.</p>
+          </div>
         </div>
       </div>
 
